@@ -68,6 +68,7 @@ import org.apache.jackrabbit.oak.commons.Buffer;
 import org.apache.jackrabbit.oak.plugins.memory.ModifiedNodeState;
 import org.apache.jackrabbit.oak.segment.RecordWriters.RecordWriter;
 import org.apache.jackrabbit.oak.segment.WriteOperationHandler.WriteOperation;
+import org.apache.jackrabbit.oak.segment.blob.BlobId;
 import org.apache.jackrabbit.oak.segment.file.tar.GCGeneration;
 import org.apache.jackrabbit.oak.spi.blob.BlobStore;
 import org.apache.jackrabbit.oak.spi.state.DefaultNodeStateDiff;
@@ -576,17 +577,21 @@ public class DefaultSegmentWriter implements SegmentWriter {
                 }
             }
 
-            String reference = blob.getReference();
-            if (reference != null && blobStore != null) {
-                String blobId = blobStore.getBlobId(reference);
-                if (blobId != null) {
-                    return writeBlobId(blobId);
-                } else {
-                    LOG.debug("No blob found for reference {}, inlining...", reference);
-                }
+            //
+            // MISCHIEF ALERT!
+            //
+
+            //String reference = blob.getReference();
+            // Prefer getContentIdentity per Tom's reco
+            String blobContentIdentity = blob.getContentIdentity();
+            if (blobContentIdentity != null) {
+                BlobId blobId = BlobId.fromString(blobContentIdentity);
+
+                // Record this blobId
+                BlobIdFileWriter.appendBlobIdToBlobListFile(blobId);
             }
 
-            return writeStream(blob.getNewStream());
+            return null;
         }
 
         /**

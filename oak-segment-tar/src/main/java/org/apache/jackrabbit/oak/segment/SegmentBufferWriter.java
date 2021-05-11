@@ -252,7 +252,11 @@ public class SegmentBufferWriter implements WriteOperationHandler {
      * @param recordId  the record ID.
      */
     public void writeRecordId(RecordId recordId) {
-        checkNotNull(recordId);
+        //
+        // MISCHIEF ALERT
+        //
+        if (recordId == null) return;
+        //checkNotNull(recordId);
         checkState(segmentReferences.size() + 1 < 0xffff,
                 "Segment cannot have more than 0xffff references");
 

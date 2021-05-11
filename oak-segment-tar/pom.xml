@@ -27,6 +27,7 @@
         <relativePath>../oak-parent/pom.xml</relativePath>
     </parent>
 
+    <version>1.41-SNAPSHOT</version>
     <artifactId>oak-segment-tar</artifactId>
     <packaging>bundle</packaging>
 
