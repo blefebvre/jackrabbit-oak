@@ -421,6 +421,7 @@ public class SegmentBufferWriter implements WriteOperationHandler {
             // Collect the newly referenced segment ids
             Set<SegmentId> segmentIds = newHashSet();
             for (RecordId recordId : ids) {
+                if (recordId == null) continue;
                 SegmentId segmentId = recordId.getSegmentId();
                 if (!segmentReferences.contains(segmentId)) {
                     segmentIds.add(segmentId);
