@@ -36,7 +36,7 @@ public class BlobIdFileWriter {
 
     private static final Logger LOG = LoggerFactory.getLogger(BlobIdFileWriter.class);
 
-    private static final String BLOB_LIST_FILE_PATH = "/tmp/oak-blob-list-" + new Date().getTime();
+    private static final String BLOB_LIST_FILE_PATH = "crx-quickstart/cloud-migration/oak-blob-list-" + new Date().getTime();
     private static final int NUMBER_OF_BLOBS_UNTIL_LOG_PRINTED = 10000;
     private static long totalBlobsLogged = 0;
 
